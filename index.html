@@ -787,13 +787,11 @@ document.addEventListener("click", (e) => {
 
 function priceCalc(power){
 
-let price=80+(power*4.2);
+let finalPrice = Math.floor(power / 10) * 10;
 
-let finalPrice = Math.floor(price / 10) * 10;
+if(finalPrice < 150) finalPrice = 150;
 
-if(finalPrice < 100) finalPrice = 100;
-
-if(finalPrice > 590) finalPrice = 590;
+if(finalPrice > 500) finalPrice = 500;
 
 return finalPrice + " Million";
 
@@ -834,8 +832,8 @@ try {
     const primaryType = poke.types[0].type.name;
 const color = typeColors[primaryType] || '#777';
 
-let total=0;
-poke.stats.forEach(s=>total+=s.base_stat);
+let totalStats=0;
+poke.stats.forEach(s=>totalStats+=s.base_stat);
 
 const detailBox = document.querySelector('.detailBox');
 detailBox.style.boxShadow = `0 15px 35px rgba(0,0,0,0.6), 0 0 30px ${color}59`;
@@ -852,9 +850,11 @@ dname.innerText=
 poke.name.toUpperCase();
 dname.style.color = color;
 
-let power=
+// Ability, Rarity, Powers based pricing
+let abilityCount = poke.abilities.length;
+let isRare = rare.includes(poke.id);
 
-Math.floor(total/6);
+let power = (totalStats / 2) + (abilityCount * 20) + (isRare ? 100 : 0);
 
 dprice.innerText=
 
